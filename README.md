@@ -1,6 +1,15 @@
 # AWS Distro for OpenTelemetry (ADOT) tracing
 You can visualize traces in local environment (using Jaeger) and in AWS (using X-Ray) with AWS Distro for OpenTelemetry.
 
+## Requirements
+
+- AWS Account
+- AWS Region: us-east-1
+- Node.js (v16.17.1)
+- Npm (8.15.0)
+- Docker (20.10.7)
+- Docker-Compose (1.29.2)
+
 ## Setup
 
 ```shell
@@ -15,7 +24,7 @@ cdk deploy
 
 ### Edit `docker-compose.yaml`
 
-DynamoDB table's name is printed on the terminal. Fill out `TABLE_NAME` in docker-compose.yaml.
+DynamoDB table's name is printed on the terminal (`AppRunnerOpentelemetryStack.DynamoDBTableName`). Fill out `TABLE_NAME` in docker-compose.yaml.
 
 ### Visualize trace with Jaeger
 Run application container and Jaeger container with Docker Compose.
@@ -37,7 +46,7 @@ curl http://localhost:8080/traceid
 ![sequence adot](./img/sequence-adot.png)
 
 ### Register App Runner URL
-App Runner URL is printed on the terminal. Copy the endpoint URL.
+App Runner URL is printed on the terminal (`AppRunnerOpentelemetryStack.AppRunnerURL`). Copy the endpoint URL.
 
 ```shell
 export ENDPOINT=<App Runner URL>
@@ -84,6 +93,6 @@ curl -XDELETE "$ENDPOINT/movie/1"
 ```
 
 ### Visualize traces
-You can see Service Map in the AWS management console.
+You can see Service Map in the [AWS management console](https://us-east-1.console.aws.amazon.com/cloudwatch/home?region=us-east-1#xray:service-map/map).
 
-![service map](./img/servicemap.png)
+![service map](./img/service_map.png)
