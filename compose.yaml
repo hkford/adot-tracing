@@ -1,0 +1,25 @@
+version: '3.1'
+
+services:
+    golang-echo:
+        build:
+            context: ./container
+            dockerfile: Dockerfile
+        environment:
+            - OTEL_EXPORTER_OTLP_ENDPOINT=jaeger:4317
+            - BACKEND=JAEGER
+            - APP_PORT=8080
+            - TABLE_NAME=
+            - AWS_REGION=us-east-1
+        ports:
+            - 8080:8080
+        user: nonroot
+        depends_on:
+            - 'jaeger'
+
+    jaeger:
+        image: jaegertracing/all-in-one:1.37
+        environment:
+            - COLLECTOR_OTLP_ENABLED=true
+        ports:
+            - 80:16686

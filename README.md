@@ -8,7 +8,7 @@ You can visualize traces in local environment (using Jaeger) and in AWS (using X
 - Node.js (v16.17.1)
 - Npm (8.15.0)
 - Docker (20.10.7)
-- Docker-Compose (1.29.2)
+- Docker Compose plugin (1.29.2)
 
 ## Setup
 
@@ -29,8 +29,8 @@ DynamoDB table's name is printed on the terminal (`AppRunnerOpentelemetryStack.D
 ### Visualize trace with Jaeger
 Run application container and Jaeger container with Docker Compose.
 
-```shell
-docker-compose up
+```term
+docker compose up
 ```
 
 Make some requests to app container, and you can see traces in Jaeger UI (open browser in `http://localhost:80`).
