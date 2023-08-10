@@ -31,7 +31,7 @@ func Run() {
 
 	port, ok := os.LookupEnv("APP_PORT")
 	if !ok {
-		util.PanicLog(nil, "APP_PORT not set")
+		util.FatalLog(nil, "APP_PORT not set")
 	}
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%v", port)))
 }

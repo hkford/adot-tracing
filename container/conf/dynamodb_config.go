@@ -2,7 +2,6 @@ package conf
 
 import (
 	"context"
-	"log"
 	"main/model"
 	"main/util"
 	"os"
@@ -19,7 +18,7 @@ type DynamodbClientConfig struct {
 func NewDynamodbClientConfig() *DynamodbClientConfig {
 	table := os.Getenv("TABLE_NAME")
 	if table == "" {
-		log.Fatal("No TABLE_NAME set")
+		util.FatalLog(nil, "No TABLE_NAME set")
 	}
 	config := &DynamodbClientConfig{table}
 	return config
@@ -28,7 +27,7 @@ func NewDynamodbClientConfig() *DynamodbClientConfig {
 func NewDynamoDBClient() model.DynamoDBTableAPI {
 	cfg, err := config.LoadDefaultConfig(context.TODO())
 	if err != nil {
-		util.PanicLog(err, "unable to load SDK config")
+		util.FatalLog(err, "unable to load SDK config")
 	}
 	otelaws.AppendMiddlewares(&cfg.APIOptions)
 	client := dynamodb.NewFromConfig(cfg)

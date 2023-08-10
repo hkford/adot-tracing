@@ -1,4 +1,4 @@
-FROM golang:1.18.1 AS builder
+FROM golang:1.21.0 AS builder
 RUN go env -w GOPROXY=direct
 WORKDIR /app/
 COPY . .

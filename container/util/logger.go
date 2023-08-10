@@ -3,18 +3,22 @@ package util
 import (
 	"fmt"
 
+	"context"
 	"github.com/labstack/echo/v4"
-	"github.com/rs/zerolog/log"
+	"log/slog"
+	"os"
 )
 
-func PanicLog(err error, message string) {
-	if err != nil {
-		log.Panic().Msg(fmt.Sprintf("%s: %v", message, err))
-	}
+func FatalLog(err error, message string) {
+	const fatalLevel slog.Level = 10
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+	logger.Log(context.Background(), fatalLevel, fmt.Sprintf("%s: %v", message, err))
+	os.Exit(1)
 }
 
 func ErrorLog(err error, message string) {
-	log.Error().Err(err).Msg(message)
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+	logger.Error(fmt.Sprintf("%s: %v", message, err))
 }
 
 type requestLogInput struct {
@@ -25,11 +29,13 @@ type requestLogInput struct {
 }
 
 func requestLog(i requestLogInput) {
-	log.Info().Str("method", i.method).Str("path", i.path).Str("client", i.clientAddr).Str("request id", i.requestID).Send()
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+	logger.Info("access log", slog.String("method", i.method), slog.String("path", i.path), slog.String("client", i.clientAddr), slog.String("request id", i.requestID))
 }
 
 func ResponseLog(msg string) {
-	log.Info().Str("message", msg).Send()
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+	logger.Info(msg)
 }
 
 func WrapEchoHandlerWithLogging(originalHandler echo.HandlerFunc) echo.HandlerFunc {

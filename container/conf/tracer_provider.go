@@ -27,7 +27,7 @@ func RegisterTracerProvider() {
 	} else if backend == "JAEGER" {
 		withJaegerExporter(res)
 	} else {
-		util.PanicLog(nil, "OpenTelemetry BACKEND not set")
+		util.FatalLog(nil, "Environment variable BACKEND (XRAY or JAEGER)not set")
 	}
 }
 
@@ -40,7 +40,7 @@ func withXRayExporter(res *resource.Resource) {
 	}
 	traceExporter, err := otlptracegrpc.New(ctx, otlptracegrpc.WithInsecure(), otlptracegrpc.WithEndpoint(endpoint), otlptracegrpc.WithDialOption(grpc.WithBlock()))
 	if err != nil {
-		util.PanicLog(err, "failed to create new OTLP trace exporter for X-Ray")
+		util.FatalLog(err, "failed to create new OTLP trace exporter for X-Ray")
 	}
 
 	idg := xray.NewIDGenerator()
@@ -67,7 +67,7 @@ func withJaegerExporter(res *resource.Resource) {
 	}
 	traceExporter, err := otlptracegrpc.New(ctx, otlptracegrpc.WithInsecure(), otlptracegrpc.WithEndpoint(endpoint), otlptracegrpc.WithDialOption(grpc.WithBlock()))
 	if err != nil {
-		util.PanicLog(err, "failed to create new OTLP trace exporter for Jaeger")
+		util.FatalLog(err, "failed to create new OTLP trace exporter for Jaeger")
 	}
 
 	tp := sdktrace.NewTracerProvider(
